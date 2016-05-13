@@ -62,4 +62,5 @@ hist2d(ax4, var1, var2, [0.95, 0.68], binsize=80, smooth=1.5,
 
 
 savefig('fig.pdf', bbox_inches='tight')
+#savefig('fig.png', bbox_inches='tight')
 
