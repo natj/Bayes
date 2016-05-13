@@ -163,5 +163,3 @@ def hist2d(ax, var1, var2, levels, binsize=50, smooth=1.5, xlabel='varx', ylabel
 
 
 
-savefig('fig.pdf', bbox_inches='tight')
-
