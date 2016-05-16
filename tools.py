@@ -10,18 +10,24 @@ from scipy.interpolate import griddata
 
 
 #read data in CODA format using genfromtxt
-def read_da(runname, vari):
+def read_da(runname, vari, nchain):
     vari = vari-1 #scale to [0,inf[ from human format [1,inf[
 
     fname = runname+'index.txt'
-    da_index = np.genfromtxt(fname, delimiter="  ", comments='#')
+    #print fname
+    da_index = np.genfromtxt(fname, delimiter=" ", comments='#')
 
     #print "reading var: ", da_index[vari,0]
-    i1 = da_index[vari, 1]-1
-    i2 = da_index[vari, 2] 
+    #print da_index
+    if da_index.ndim == 1:
+        i1 = da_index[1]-1
+        i2 = da_index[2]
+    else:
+        i1 = da_index[vari, 1]-1
+        i2 = da_index[vari, 2] 
     #print "   from ", i1, ":", i2
 
-    fname = runname+'chain1.txt'
+    fname = runname+'chain'+str(nchain)+'.txt'
     da = np.genfromtxt(fname, delimiter="  ", comments='#')
     chain = np.array(da[i1:i2, 1])
     #print chain[0], " ", chain[-1]
@@ -97,8 +103,8 @@ def hist1d(ax, var, level, xlabel='var'):
     rd = 3
     print "xlo:", round(xlo1,rd), " ",i1, " xhi:", round(xhi1,rd), " ", i2, " level:",round(hlim, rd)
 
-    ax.plot(bins, hist, "k-")
-    ax.fill_between(bins[i1:i2], hist[i1:i2], np.zeros(i2-i1), color='darkorange', alpha=0.8)
+    ax.plot(bins, hist, "k-", alpha=0.5)
+    ax.fill_between(bins[i1:i2], hist[i1:i2], np.zeros(i2-i1), color='darkorange', alpha=0.5)
 
     return
 
