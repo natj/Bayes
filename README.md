@@ -4,4 +4,5 @@ Intensive course on Bayesian methods
 Some course work that is related to the aforementioned summer school/course.
 
 ![fig1](/../gh-pages/figs/fig1.png?raw=true)
+![fig1](/../gh-pages/neutrino/fig.png?raw=true)
 
