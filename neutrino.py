@@ -80,5 +80,6 @@ ax2.plot(x, y3, "g--", linewidth=2.5)
 
 
 savefig('neutrino/fig.pdf', bbox_inches='tight')
+savefig('neutrino/fig.png', bbox_inches='tight')
 #savefig('fig.png', bbox_inches='tight')
 
