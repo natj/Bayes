@@ -23,7 +23,10 @@ gs = GridSpec(2, 2)
 #gs.update(wspace = 0.3)
 
 #set up data
-runname='neutrino/CODA'
+exerc='galaxy'
+
+runname=exerc+'/CODA'
+
 
 var1 = read_da(runname, 1, 1)
 var2 = read_da(runname, 1, 2)
@@ -38,7 +41,7 @@ print " std:", std(var1)
 ax1 = subplot(gs[0,0])
 ax1.minorticks_on()
 ax1.set_xlim(-1, 500)
-ax1.set_ylim(-5, 10)
+#ax1.set_ylim(-5, 10)
 ax1.set_ylabel('var1')
 
 ax1.plot(var1, "k-")
@@ -49,31 +52,25 @@ ax1.plot([0,500], [mean(var1)+std(var1), mean(var1)+std(var1)], "b", linestyle="
 
 #histogram
 ax2 = subplot(gs[0,1])
-hist1d(ax2, var1, 0.9, xlabel='m')
-hist1d(ax2, var2, 0.9, xlabel='m')
-hist1d(ax2, var3, 0.9, xlabel='m')
+hist1d(ax2, var1, 0.95, xlabel='m')
+hist1d(ax2, var2, 0.95, xlabel='m')
+hist1d(ax2, var3, 0.95, xlabel='m')
 
-
-
-
-#analytical stuff:
-#########################
-#measurement
-x = np.linspace(-10,10,100)
-#ax3 = subplot(gs[1,1])
-y1 = mlab.normpdf(x, -4.0, 2.0)
-ax2.plot(x, y1, "r-")
-
-
-#prior
+# analytical
+x = np.linspace(0,0.02,100)
+#y1 = mlab.normpdf(x, -4.0, 2.0)
+#ax2.plot(x, y1, "r-")
+#
+#
+##prior
 y2 = np.ones(100)
-y2[0:50] = 0.0
-ax2.plot(x, y2, "-", color="blue")
-
-#P(data | model)*P(model)
-y3 = y1 * y2
-y3 = y3 / sum(y3[1:]*np.diff(x))
-ax2.plot(x, y3, "g--", linewidth=2.5)
+#y2[0:50] = 0.0
+#ax2.plot(x, y2, "-", color="blue")
+#
+##P(data | model)*P(model)
+#y3 = y1 * y2
+#y3 = y3 / sum(y3[1:]*np.diff(x))
+#ax2.plot(x, y3, "g--", linewidth=2.5)
 
 
 #test priors for limits 0-2 and 0-100
@@ -82,9 +79,6 @@ ax3 = subplot(gs[1,0])
 autocorr(ax3, var1)
 
 
-
-
-savefig('neutrino/fig.pdf', bbox_inches='tight')
-savefig('neutrino/fig.png', bbox_inches='tight')
-#savefig('fig.png', bbox_inches='tight')
+savefig(exerc+'/fig.pdf', bbox_inches='tight')
+savefig(exerc+'/fig.png', bbox_inches='tight')
 

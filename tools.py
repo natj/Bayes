@@ -33,10 +33,12 @@ def read_da(runname, vari, nchain):
     #print chain[0], " ", chain[-1]
     return chain
 
-#find using iteration the level of some arbitratry distribution where 
+# Highest posterior density interval
+#
+# Found using iterating the level of some arbitratry distribution where 
 # we have some fraction of points
 def limit_iter(hist, level):
-    acc = 0.001
+    acc = 0.0001
     diff = 1.0
     iter=0
     sum0 = sum(hist)
@@ -45,7 +47,7 @@ def limit_iter(hist, level):
     right=1.0
     midpoint=0.5
 
-    while np.abs(diff) > acc and iter < 50:
+    while np.abs(diff) > acc and iter < 200:
         midpoint = (right + left) / 2.0
         upmid = 0.0
         for i in range(len(hist)):
@@ -90,12 +92,37 @@ def conf_lims(hist, bin_edges, level):
             
     return xlo, xhi, i1, i2, hlim
 
+
+def autocorr(ax, var, xlabel='var'):
+
+    # yunbiased = var - np.mean(var)
+    # ynorm = np.sum(yunbiased**2)
+    # acor = np.correlate(yunbiased, yunbiased, "same")/ynorm
+    # acor = acor[len(acor)/2:]
+
+    timeseries = np.copy(var)
+    mean = np.mean(timeseries)
+    timeseries -= np.mean(timeseries)
+    autocorr_f = np.correlate(timeseries, timeseries, mode='full')
+    temp = autocorr_f[autocorr_f.size/2:]/autocorr_f[autocorr_f.size/2]
+
+    iact = []
+    iact.append(sum(autocorr_f[autocorr_f.size/2:]/autocorr_f[autocorr_f.size/2]))
+
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel('autocorr')
+    ax.set_xlim(-1, 30)
+    ax.plot(temp, "k-", alpha=0.7)
+
+    return 
+
+
 def hist1d(ax, var, level, xlabel='var'):
     ax.minorticks_on()
     ax.set_xlabel(xlabel)
 
     #compute histogram
-    hist, bin_edges = np.histogram(var, bins=50, normed=True)
+    hist, bin_edges = np.histogram(var, bins=100, normed=True)
     bins = bin_edges[0:-1] + np.diff(bin_edges)
 
     #compute limits
@@ -132,7 +159,7 @@ def hist2d(ax, var1, var2, levels, binsize=50, smooth=1.5, xlabel='varx', ylabel
         hdata_smooth = ndimage.gaussian_filter(hdata, sigma=smooth, order=0)
 
     hdata_masked = np.ma.masked_where(hdata_smooth <= 0.0, hdata)
-    im = ax.imshow(hdata_masked,
+    im = ax.imshow(hdata_masked.T,
                    interpolation='nearest',
                    origin='lower',
                    extent=extent,
@@ -149,7 +176,7 @@ def hist2d(ax, var1, var2, levels, binsize=50, smooth=1.5, xlabel='varx', ylabel
     for level in levels:
 
         levels = [1.0-level]
-        cs = ax.contour(hdata_smooth,
+        cs = ax.contour(hdata_smooth.T,
                 levels,
                 colors = 'k',
                 origin='lower',

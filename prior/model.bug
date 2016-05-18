@@ -1,0 +1,6 @@
+model 
+{
+obss~dpois(s)
+s <- pow(tmps, -0.666666)
+tmps~dunif(0,10000)
+}

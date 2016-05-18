@@ -1,0 +1,10 @@
+model 
+{
+for (i in
+    1:length(obstot)) {
+obstot[i]~dpois(s+bkg[i]/C[i])
+obsbkg[i]~dpois(bkg[i])
+bkg[i]~dunif(0,1.0e+2)
+}
+s~dunif(0,1.0e+2)
+}
