@@ -1,0 +1,15 @@
+model
+{
+for (i in 1:length(obslogM)) {
+obslogM[i]~dnorm(logM[i], 1/errlogM[i]^2)
+obslogYSZ[i]~dnorm(logYSZ[i], 1/errlogYSZ[i]^2)
+logM[i]~dunif(10, 20)
+logYm[i]<-alpha-4.0 + beta*(logM[i]-15.0) + gamma*log(Ez[i])/2.3
+logYSZ[i]~dnorm(logYm[i], prec.intrscat)
+}
+prec.intrscat~dgamma(1.0E-4, 1.0E-4)
+alpha ~dnorm(0.0, 1.0E-4)
+beta ~dt(0,1,1)
+gamma ~dt(0,1,1)
+intrscat <- 1/sqrt(prec.intrscat)
+}

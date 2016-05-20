@@ -1,0 +1,14 @@
+model
+{
+for (i in 1:length(obsx)) {
+obsx[i]~dnorm(x[i], 1/errx[i]^2)
+obsy[i]~dnorm(y[i], 1/erry[i]^2)
+x[i]~dunif(-10, 10)
+y[i]~dnorm(b+a*(x[i]-2.3), prec.intrscat)
+}
+prec.intrscat~dgamma(1.0E-2, 1.0E-2)
+a~dt(0,1,1)
+b~dnorm(0.0, 1/1.0e5)
+intrscat <- 1/sqrt(prec.intrscat)
+}
+

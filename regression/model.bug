@@ -1,0 +1,9 @@
+model 
+{
+for (i in 1:length(obsv)) {
+vi[i]~dnorm(vcent, precv[i])
+obsv[i]~dnorm(vi[i], 1./sigmav^2)
+}
+vcent~dunif(8000, 12000)
+sigmav~dunif(500,10000)
+}

@@ -1,0 +1,15 @@
+model
+{
+for (i in 1:length(obslgMstar)) {
+obslgM200[i]~dnorm(lgM200[i], tau.lgM200[i])
+lgM200[i]~dunif(0,500)
+obslgMstar[i]~dnorm(lgMstar[i], tau.lgMstar[i])
+z[i]<-alpha + 12.5 + beta*(lgM200[i]-14.5)
+lgMstar[i]~dnorm(z[i], prec.intrscat)
+}
+intrscat <- 1/sqrt(prec.intrscat)
+prec.intrscat~dgamma(1.0E-5, 1.0E-5)
+alpha~dnorm(0.0, 1.0E-4)
+beta~dt(0,1,1)
+}
+

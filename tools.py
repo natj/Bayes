@@ -29,6 +29,7 @@ def read_da(runname, vari, nchain):
 
     fname = runname+'chain'+str(nchain)+'.txt'
     da = np.genfromtxt(fname, delimiter="  ", comments='#')
+    #print da
     chain = np.array(da[i1:i2, 1])
     #print chain[0], " ", chain[-1]
     return chain

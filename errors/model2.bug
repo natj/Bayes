@@ -1,0 +1,12 @@
+model
+{
+sigmai~dunif(0,3)
+alpha~duinf(-10,10)
+beta~dstudent(1)
+for (i in 1:length(obsy)) {
+obsy[i]~dnorm(y[i], prec.obsy[i])
+y[i]~dnorm(zi, 1.0/sigmai^2)
+z[i]<-alpha + 0.1 + beta*(x[i]-0.03)
+}
+}
+
